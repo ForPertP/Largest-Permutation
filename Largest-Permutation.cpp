@@ -15,8 +15,10 @@ vector<string> split(const string &);
  *  2. INTEGER_ARRAY arr
  */
 
-vector<int> largestPermutation(int k, vector<int> arr) {
-
+vector<int> largestPermutation(int k, vector<int> arr)
+{
+    vector<int> result{};
+    return result;
 }
 
 int main()
