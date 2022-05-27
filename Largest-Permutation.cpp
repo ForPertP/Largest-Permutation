@@ -17,8 +17,27 @@ vector<string> split(const string &);
 
 vector<int> largestPermutation(int k, vector<int> arr)
 {
-    vector<int> result{};
-    return result;
+    for (int i = 0; i < arr.size() && k > 0; ++i)
+    {
+        int index = 0;
+        
+        for (int j = 0; j < arr.size(); ++j)
+        {   
+            if (arr[j] == arr.size() - i)
+            {
+                index = j;
+                break;
+            }
+        }
+        
+        if (i == index)
+            continue;
+        
+        std::swap(arr[i], arr[index]);
+        k--;
+    }
+    
+    return arr;
 }
 
 int main()
@@ -102,4 +121,3 @@ vector<string> split(const string &str) {
 
     return tokens;
 }
-
