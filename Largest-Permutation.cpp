@@ -17,24 +17,23 @@ vector<string> split(const string &);
 
 vector<int> largestPermutation(int k, vector<int> arr)
 {
-    for (int i = 0; i < arr.size() && k > 0; ++i)
+    int n = arr.size();
+    std::map<int,int> mp;
+    
+    for (int i = 0; i < n; ++i)
+        mp[arr[i]] = i;
+    
+    for (int i = 0; i < n; ++i)
     {
-        int index = 0;
+        if (k == 0) return arr;
         
-        for (int j = 0; j < arr.size(); ++j)
-        {   
-            if (arr[j] == arr.size() - i)
-            {
-                index = j;
-                break;
-            }
+        if (arr[i] != n - i)
+        {
+            int j = mp[n-i];
+            mp[arr[i]] = j;
+            swap(arr[i], arr[j]);
+            k--;
         }
-        
-        if (i == index)
-            continue;
-        
-        std::swap(arr[i], arr[index]);
-        k--;
     }
     
     return arr;
