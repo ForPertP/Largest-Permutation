@@ -18,26 +18,30 @@ vector<string> split(const string &);
 vector<int> largestPermutation(int k, vector<int> arr)
 {
     int n = arr.size();
-    std::map<int,int> mp;
-    
-    for (int i = 0; i < n; ++i)
-        mp[arr[i]] = i;
-    
-    for (int i = 0; i < n; ++i)
+    vector<int> pos(n+1);
+
+    for (int i = 0; i < n; i++)
+        pos[arr[i]] = i;
+
+    for (int i = 0; i < n && k > 0; i++)
     {
-        if (k == 0) return arr;
-        
-        if (arr[i] != n - i)
-        {
-            int j = mp[n-i];
-            mp[arr[i]] = j;
-            swap(arr[i], arr[j]);
-            k--;
-        }
+        int target = n - i;
+
+        if (arr[i] == target) continue;
+
+        int j = pos[target];
+
+        pos[arr[i]] = j;
+        pos[target] = i;
+
+        swap(arr[i], arr[j]);
+
+        k--;
     }
-    
+
     return arr;
 }
+
 
 int main()
 {
@@ -82,41 +86,44 @@ int main()
     return 0;
 }
 
-string ltrim(const string &str) {
+string ltrim(const string &str)
+{
     string s(str);
-
     s.erase(
-        s.begin(),
-        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+        s.begin(), find_if(s.begin(), s.end(), [](unsigned char ch) { return !isspace(ch); })
     );
-
     return s;
 }
 
-string rtrim(const string &str) {
+string rtrim(const string &str)
+{
     string s(str);
-
     s.erase(
-        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
-        s.end()
+        find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !isspace(ch); }).base(), s.end()
     );
-
     return s;
 }
 
-vector<string> split(const string &str) {
+std::vector<string> split(const string &str)
+{
     vector<string> tokens;
+    string_view str_view(str);
+    size_t start = 0;
+    size_t end = 0;
 
-    string::size_type start = 0;
-    string::size_type end = 0;
-
-    while ((end = str.find(" ", start)) != string::npos) {
-        tokens.push_back(str.substr(start, end - start));
-
+    while ((end = str_view.find(' ', start)) != string_view::npos)
+    {
+        if (end > start)
+        {
+            tokens.emplace_back(str_view.substr(start, end - start));
+        }
         start = end + 1;
     }
 
-    tokens.push_back(str.substr(start));
+    if (start < str_view.size())
+    {
+        tokens.emplace_back(str_view.substr(start));
+    }
 
     return tokens;
 }
