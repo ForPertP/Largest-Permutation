@@ -18,6 +18,34 @@ vector<string> split(const string &);
 vector<int> largestPermutation(int k, vector<int> arr)
 {
     int n = arr.size();
+    unordered_map<int,int> pos;
+
+    for (int i = 0; i < n; i++)
+        pos[arr[i]] = i;
+
+    for (int i = 0; i < n && k > 0; i++)
+    {
+        int target = n - i;
+
+        if (arr[i] == target) continue;
+
+        int j = pos[target];
+
+        pos[arr[i]] = j;
+        pos[target] = i;
+
+        swap(arr[i], arr[j]);
+
+        k--;
+    }
+
+    return arr;
+}
+
+
+vector<int> largestPermutation2(int k, vector<int> arr)
+{
+    int n = arr.size();
     vector<int> pos(n+1);
 
     for (int i = 0; i < n; i++)
