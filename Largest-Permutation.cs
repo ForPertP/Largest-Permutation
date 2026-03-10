@@ -27,6 +27,36 @@ class Result
     public static List<int> largestPermutation(int k, List<int> arr)
     {
         int n = arr.Count;
+        Dictionary<int,int> pos = new Dictionary<int,int>();
+
+        for (int i = 0; i < n; i++)
+            pos[arr[i]] = i;
+
+        for (int i = 0; i < n && k > 0; i++)
+        {
+            int target = n - i;
+
+            if (arr[i] == target) continue;
+
+            int j = pos[target];
+
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+
+            pos[temp] = j;
+            pos[target] = i;
+
+            k--;
+        }
+
+        return arr;
+    }
+
+
+    public static List<int> largestPermutation2(int k, List<int> arr)
+    {
+        int n = arr.Count;
         int[] pos = new int[n + 1];
 
         for (int i = 0; i < n; i++)
