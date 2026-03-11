@@ -21,7 +21,37 @@ class Result {
      *  2. INTEGER_ARRAY arr
      */
 
-    public static List<Integer> largestPermutation(int k, List<Integer> arr) {
+    public static List<Integer> largestPermutation(int k, List<Integer> arr)
+    {
+        int n = arr.size();
+        Map<Integer,Integer> pos = new HashMap<>();
+
+        for (int i = 0; i < n; i++)
+            pos.put(arr.get(i), i);
+
+        for (int i = 0; i < n && k > 0; i++)
+        {
+            int target = n - i;
+
+            if (arr.get(i) == target) continue;
+
+            int j = pos.get(target);
+
+            int temp = arr.get(i);
+            arr.set(i, arr.get(j));
+            arr.set(j, temp);
+
+            pos.put(temp, j);
+            pos.put(target, i);
+
+            k--;
+        }
+
+        return arr;
+    }
+    
+    
+    public static List<Integer> largestPermutation2(int k, List<Integer> arr) {
         int n = arr.size();
         int[] pos = new int[n + 1];
 
